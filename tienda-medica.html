@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Tienda Médica El Salvador</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0066CC;
+  --primary-dark: #004d99;
+  --primary-light: #3388dd;
+  --accent: #00AAFF;
+  --accent2: #e8f4fd;
+  --bg: #f0f6ff;
+  --white: #ffffff;
+  --text: #1a2a3a;
+  --text-light: #5a7090;
+  --border: #cce0f5;
+  --success: #00b894;
+  --warning: #fdcb6e;
+  --danger: #e17055;
+  --card-shadow: 0 4px 20px rgba(0,102,204,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+/* HEADER */
+.app-header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,var(--accent) 100%);color:#fff;padding:0;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,102,204,0.25);}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;}
+.logo-area{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.logo-text{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.15rem;line-height:1.1;}
+.logo-sub{font-size:0.65rem;opacity:0.8;font-weight:400;letter-spacing:0.05em;}
+.header-actions{display:flex;align-items:center;gap:8px;}
+.cart-btn{background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:12px;padding:8px 14px;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'Outfit',sans-serif;font-weight:600;transition:background 0.2s;}
+.cart-btn:hover{background:rgba(255,255,255,0.3);}
+.cart-badge{background:#FF4757;color:#fff;border-radius:50%;width:20px;height:20px;font-size:0.72rem;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.sv-flag{font-size:1.1rem;}
+/* NAV TABS */
+.cat-nav{display:flex;gap:6px;padding:0 12px 12px;overflow-x:auto;scrollbar-width:none;}
+.cat-nav::-webkit-scrollbar{display:none;}
+.cat-tab{flex-shrink:0;background:rgba(255,255,255,0.18);border:none;color:rgba(255,255,255,0.85);border-radius:20px;padding:6px 14px;font-size:0.82rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;transition:all 0.2s;white-space:nowrap;}
+.cat-tab.active,.cat-tab:hover{background:#fff;color:var(--primary);font-weight:700;}
+/* MAIN */
+main{padding:16px;max-width:480px;margin:0 auto;}
+/* BANNER */
+.banner{background:linear-gradient(135deg,#0066CC,#00AAFF);border-radius:var(--radius);padding:20px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;min-height:100px;}
+.banner.has-img{padding:0;min-height:140px;background:none;}
+.banner.has-img img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius);display:block;aspect-ratio:16/9;}
+.banner:not(.has-img)::before{content:'🇸🇻';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:3rem;opacity:0.25;}
+.banner h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:4px;}
+.banner p{font-size:0.83rem;opacity:0.9;}
+.banner-text-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,40,100,0.7) 0%,rgba(0,0,0,0.1) 100%);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;justify-content:center;}
+/* PAYMENT BADGE */
+.payment-badge{background:linear-gradient(135deg,#e8f4fd,#cce0f5);border:2px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.payment-badge-icon{font-size:1.4rem;}
+.payment-badge-text{font-weight:700;font-size:0.88rem;color:var(--primary-dark);}
+.payment-badge-sub{font-size:0.75rem;color:var(--text-light);}
+/* SECTION */
+.section-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:1.05rem;color:var(--primary-dark);margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
+/* PRODUCTS GRID */
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.product-card{background:#fff;border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;cursor:pointer;transition:transform 0.18s,box-shadow 0.18s;border:1.5px solid transparent;}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,102,204,0.18);border-color:var(--accent);}
+.product-img{width:100%;height:130px;object-fit:cover;background:linear-gradient(135deg,#e8f4fd,#cce0f5);display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.product-img img{width:100%;height:100%;object-fit:cover;}
+.product-info{padding:10px;}
+.product-name{font-weight:700;font-size:0.88rem;color:var(--text);line-height:1.3;margin-bottom:3px;}
+.product-price{color:var(--primary);font-weight:800;font-size:1rem;font-family:'Nunito',sans-serif;}
+.product-add-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px;font-size:0.82rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;margin-top:7px;transition:background 0.2s;}
+.product-add-btn:hover{background:var(--primary-dark);}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,30,60,0.55);z-index:200;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s;}
+.modal-box{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:24px 20px 32px;animation:slideUp 0.25s;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(40px)}to{transform:translateY(0)}}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.15rem;color:var(--primary-dark);}
+.modal-close{background:var(--bg);border:none;width:34px;height:34px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-product-img{width:100%;height:200px;border-radius:var(--radius);overflow:hidden;background:linear-gradient(135deg,#e8f4fd,#cce0f5);display:flex;align-items:center;justify-content:center;font-size:5rem;margin-bottom:16px;}
+.modal-product-img img{width:100%;height:100%;object-fit:cover;}
+.modal-price{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.5rem;color:var(--primary);margin-bottom:12px;}
+.modal-desc{color:var(--text-light);font-size:0.88rem;margin-bottom:16px;line-height:1.5;}
+.option-label{font-weight:700;font-size:0.85rem;color:var(--text);margin-bottom:8px;display:block;}
+.size-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.size-btn{padding:6px 13px;border:2px solid var(--border);border-radius:8px;background:#fff;font-size:0.82rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;color:var(--text);transition:all 0.15s;}
+.size-btn.active{border-color:var(--primary);background:var(--primary);color:#fff;}
+.color-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.color-btn{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform 0.15s,border-color 0.15s;position:relative;}
+.color-btn.active{border-color:var(--primary);transform:scale(1.15);}
+.color-btn[title]::after{content:attr(title);position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:0.62rem;background:rgba(0,0,0,0.7);color:#fff;padding:2px 5px;border-radius:4px;pointer-events:none;opacity:0;transition:opacity 0.15s;}
+.color-btn:hover::after{opacity:1;}
+.qty-control{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.qty-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);transition:all 0.15s;}
+.qty-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+.qty-val{font-size:1.1rem;font-weight:700;min-width:30px;text-align:center;}
+.add-to-cart-btn{width:100%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border:none;border-radius:var(--radius-sm);padding:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity 0.2s;}
+.add-to-cart-btn:hover{opacity:0.9;}
+/* CART */
+.cart-panel{display:none;position:fixed;inset:0;background:#fff;z-index:300;overflow-y:auto;flex-direction:column;}
+.cart-panel.open{display:flex;}
+.cart-header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;padding:16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;}
+.cart-back{background:rgba(255,255,255,0.2);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cart-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.15rem;}
+.cart-body{flex:1;padding:16px;}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--text-light);}
+.cart-empty .empty-icon{font-size:4rem;margin-bottom:12px;}
+.cart-item{background:#fff;border-radius:var(--radius-sm);box-shadow:var(--card-shadow);padding:12px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start;}
+.cart-item-img{width:70px;height:70px;border-radius:10px;background:linear-gradient(135deg,#e8f4fd,#cce0f5);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;}
+.cart-item-img img{width:100%;height:100%;object-fit:cover;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-weight:700;font-size:0.88rem;margin-bottom:3px;}
+.cart-item-meta{font-size:0.78rem;color:var(--text-light);margin-bottom:6px;}
+.cart-item-price{color:var(--primary);font-weight:800;font-size:0.95rem;font-family:'Nunito',sans-serif;}
+.cart-item-actions{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.cart-qty-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);}
+.cart-qty-val{font-size:0.9rem;font-weight:700;min-width:24px;text-align:center;}
+.cart-remove{background:none;border:none;color:var(--danger);font-size:1rem;cursor:pointer;padding:4px;}
+.cart-summary{background:#fff;border-radius:var(--radius) var(--radius) 0 0;padding:20px;box-shadow:0 -4px 20px rgba(0,102,204,0.1);position:sticky;bottom:0;}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.cart-total-label{font-size:0.95rem;font-weight:600;}
+.cart-total-val{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.5rem;color:var(--primary);}
+/* CHECKOUT FORM */
+.checkout-form{padding:16px;}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-weight:700;font-size:0.85rem;color:var(--text);margin-bottom:6px;}
+.form-input{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-family:'Outfit',sans-serif;font-size:0.95rem;color:var(--text);background:#fff;transition:border-color 0.2s;}
+.form-input:focus{outline:none;border-color:var(--primary);}
+.form-input::placeholder{color:#aac3e0;}
+.submit-order-btn{width:100%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;}
+.submit-order-btn:hover{opacity:0.92;}
+.whatsapp-icon{font-size:1.3rem;}
+/* ADMIN */
+.admin-btn{position:fixed;bottom:20px;right:20px;background:var(--primary-dark);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,102,0.3);z-index:50;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.admin-btn:hover{background:var(--primary);}
+.admin-panel{display:none;position:fixed;inset:0;background:#f5f8ff;z-index:400;overflow-y:auto;flex-direction:column;}
+.admin-panel.open{display:flex;}
+.admin-header{background:linear-gradient(135deg,#003d7a,var(--primary-dark));color:#fff;padding:16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;}
+.admin-tabs{display:flex;gap:8px;padding:14px 16px;background:#fff;border-bottom:2px solid var(--border);overflow-x:auto;}
+.admin-tab{flex-shrink:0;padding:8px 16px;border:2px solid var(--border);border-radius:20px;background:#fff;font-size:0.85rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;color:var(--text-light);transition:all 0.2s;}
+.admin-tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.admin-body{flex:1;padding:16px;}
+.admin-product-card{background:#fff;border-radius:var(--radius-sm);box-shadow:var(--card-shadow);padding:14px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start;}
+.admin-product-img{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,#e8f4fd,#cce0f5);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.7rem;}
+.admin-product-img img{width:100%;height:100%;object-fit:cover;}
+.admin-product-info{flex:1;}
+.admin-product-name{font-weight:700;font-size:0.88rem;}
+.admin-product-price{color:var(--primary);font-weight:800;font-size:0.95rem;}
+.admin-product-cat{font-size:0.75rem;color:var(--text-light);}
+.admin-actions{display:flex;gap:8px;margin-top:8px;}
+.btn-edit{background:var(--accent2);color:var(--primary);border:none;border-radius:8px;padding:6px 12px;font-size:0.8rem;font-weight:700;cursor:pointer;}
+.btn-delete{background:#fff0ee;color:var(--danger);border:none;border-radius:8px;padding:6px 12px;font-size:0.8rem;font-weight:700;cursor:pointer;}
+.add-product-btn{width:100%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border:none;border-radius:var(--radius-sm);padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+/* ORDER STATUS */
+.order-card{background:#fff;border-radius:var(--radius-sm);box-shadow:var(--card-shadow);padding:14px;margin-bottom:12px;}
+.order-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.order-id{font-size:0.78rem;color:var(--text-light);}
+.order-customer{font-weight:700;font-size:0.95rem;}
+.order-phone{font-size:0.82rem;color:var(--text-light);}
+.order-address{font-size:0.82rem;color:var(--text-light);margin:4px 0 8px;}
+.order-items{font-size:0.8rem;color:var(--text);margin-bottom:8px;}
+.order-total{font-family:'Nunito',sans-serif;font-weight:800;color:var(--primary);font-size:1rem;}
+.status-select{width:100%;padding:8px 12px;border:2px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:600;color:var(--primary-dark);background:#fff;cursor:pointer;margin-top:8px;}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;}
+.status-recibido{background:#e3f2fd;color:#1565c0;}
+.status-hecho{background:#e8f5e9;color:#2e7d32;}
+.status-camino{background:#fff8e1;color:#f57f17;}
+.status-entregado{background:#e8f5e9;color:#1b5e20;}
+.status-pendiente{background:#fce4ec;color:#b71c1c;}
+/* LOGIN */
+.login-overlay{display:none;position:fixed;inset:0;background:rgba(0,30,60,0.7);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.login-overlay.open{display:flex;}
+.login-box{background:#fff;border-radius:var(--radius);padding:28px 24px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,80,0.25);}
+.login-logo{text-align:center;margin-bottom:20px;}
+.login-logo .icon{font-size:3rem;}
+.login-logo h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.3rem;color:var(--primary-dark);}
+.login-logo p{font-size:0.82rem;color:var(--text-light);}
+.login-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:13px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;transition:background 0.2s;}
+.login-btn:hover{background:var(--primary-dark);}
+.login-error{color:var(--danger);font-size:0.82rem;margin-top:6px;text-align:center;display:none;}
+/* PRODUCT FORM MODAL */
+.product-form .form-group{margin-bottom:14px;}
+.img-upload-area{width:100%;height:130px;border:2.5px dashed var(--border);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:8px;color:var(--text-light);font-size:0.85rem;background:var(--accent2);overflow:hidden;position:relative;}
+.img-upload-area img{width:100%;height:100%;object-fit:cover;}
+.img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.img-upload-label{display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;}
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--primary-dark);color:#fff;padding:10px 22px;border-radius:25px;font-size:0.88rem;font-weight:600;z-index:600;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+/* STEP INDICATOR */
+.checkout-steps{display:flex;align-items:center;gap:0;margin-bottom:20px;}
+.step{flex:1;text-align:center;font-size:0.75rem;font-weight:700;color:var(--text-light);position:relative;}
+.step::before{content:'';display:block;width:28px;height:28px;border-radius:50%;background:var(--border);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;line-height:28px;text-align:center;}
+.step.done::before{background:var(--success);color:#fff;}
+.step.active::before{background:var(--primary);color:#fff;}
+.step::after{content:'';position:absolute;top:14px;left:calc(50% + 18px);width:calc(100% - 36px);height:2px;background:var(--border);z-index:-1;}
+.step:last-child::after{display:none;}
+.step.done::after,.step.active::after{background:var(--primary);}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+/* UTIL */
+.text-center{text-align:center;}
+.mt-8{margin-top:8px;}
+.mt-12{margin-top:12px;}
+.fw-700{font-weight:700;}
+.section-divider{height:1px;background:var(--border);margin:16px 0;}
+.no-orders{text-align:center;padding:40px 20px;color:var(--text-light);}
+select.form-input option{font-family:'Outfit',sans-serif;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-icon">🩺</div>
+      <div class="logo-text">
+        Tienda Médica
+        <div class="logo-sub">🇸🇻 El Salvador · Uniformes & Más</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="cart-btn" onclick="openCart()">🛒 <span class="cart-badge" id="cart-count">0</span></button>
+    </div>
+  </div>
+  <div class="cat-nav" id="cat-nav"></div>
+</header>
+
+<!-- MAIN -->
+<main id="main-content">
+  <div class="banner" id="main-banner">
+    <h2>Ropa Médica Premium 🩺</h2>
+    <p>Uniformes, Scrubs, Calzado Clínico y más — envío en El Salvador 🇸🇻</p>
+  </div>
+  <div id="products-container"></div>
+</main>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-prod-name">Producto</span>
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
+    </div>
+    <div class="modal-product-img" id="modal-prod-img"></div>
+    <div class="modal-price" id="modal-prod-price"></div>
+    <div class="modal-desc" id="modal-prod-desc"></div>
+    <span class="option-label">Talla:</span>
+    <div class="size-options" id="modal-sizes"></div>
+    <span class="option-label">Color:</span>
+    <div class="color-options" id="modal-colors"></div>
+    <span class="option-label">Cantidad:</span>
+    <div class="qty-control">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <span class="qty-val" id="modal-qty">1</span>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+    <button class="add-to-cart-btn" onclick="addToCart()">🛒 Agregar al Carrito</button>
+  </div>
+</div>
+
+<!-- CART PANEL -->
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <button class="cart-back" onclick="closeCart()">←</button>
+    <span class="cart-title">🛒 Mi Carrito</span>
+  </div>
+  <div class="cart-body" id="cart-items-container"></div>
+  <div class="cart-summary" id="cart-summary" style="display:none">
+    <div class="cart-total">
+      <span class="cart-total-label">Total:</span>
+      <span class="cart-total-val" id="cart-total-display">$0.00</span>
+    </div>
+    <div id="checkout-section"></div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">🔒</div>
+      <h2>Panel Administrador</h2>
+      <p>Acceso exclusivo para el dueño</p>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-input" id="admin-password" placeholder="••••••••" onkeypress="if(event.key==='Enter')checkAdminLogin()">
+    </div>
+    <div class="login-error" id="login-error">❌ Contraseña incorrecta</div>
+    <button class="login-btn" onclick="checkAdminLogin()">Entrar al Panel</button>
+    <button class="login-btn" style="background:#fff;color:var(--text-light);margin-top:8px;border:2px solid var(--border);" onclick="closeLogin()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="admin-panel">
+  <div class="admin-header">
+    <button class="cart-back" onclick="closeAdmin()">←</button>
+    <span class="cart-title">⚙️ Panel Administrador</span>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchAdminTab('products',this)">📦 Productos</button>
+    <button class="admin-tab" onclick="switchAdminTab('orders',this)">📋 Pedidos</button>
+    <button class="admin-tab" onclick="switchAdminTab('banner',this)">🖼️ Banner</button>
+  </div>
+  <div class="admin-body">
+    <div id="admin-products-tab">
+      <button class="add-product-btn" onclick="openProductForm()">➕ Agregar Producto</button>
+      <div id="admin-products-list"></div>
+    </div>
+    <div id="admin-orders-tab" style="display:none">
+      <div id="admin-orders-list"></div>
+    </div>
+    <div id="admin-banner-tab" style="display:none">
+      <h3 style="font-family:'Nunito',sans-serif;font-weight:800;color:var(--primary-dark);margin-bottom:4px;">🖼️ Banner Principal</h3>
+      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">Imagen 16:9 que aparece de fondo debajo de las categorías.</p>
+      <div class="form-group">
+        <label class="form-label">Foto del Banner (16:9 recomendado)</label>
+        <div class="img-upload-area" id="banner-upload-area" style="aspect-ratio:16/9;height:auto;">
+          <img id="banner-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:8px;">
+          <div class="img-upload-label" id="banner-upload-label">
+            <span style="font-size:2rem">🖼️</span>
+            <span>Toca para elegir imagen 16:9</span>
+            <span style="font-size:0.72rem;opacity:0.7">Ej: foto de tus productos, tienda, etc.</span>
+          </div>
+          <input type="file" accept="image/*" id="banner-img-input" onchange="previewBanner(event)">
+        </div>
+      </div>
+      <button class="add-to-cart-btn" onclick="saveBanner()" style="margin-top:8px;">💾 Guardar Banner</button>
+      <button class="add-to-cart-btn" onclick="removeBanner()" style="background:#fff;color:var(--danger);border:2px solid var(--danger);margin-top:8px;">🗑️ Quitar Banner</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT FORM MODAL -->
+<div class="modal-overlay" id="product-form-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="product-form-title">Agregar Producto</span>
+      <button class="modal-close" onclick="closeProductForm()">✕</button>
+    </div>
+    <div class="product-form">
+      <input type="hidden" id="edit-product-id">
+      <div class="form-group">
+        <label class="form-label">Foto del Producto</label>
+        <div class="img-upload-area" id="img-upload-area">
+          <img id="img-preview" src="" alt="" style="display:none;">
+          <div class="img-upload-label" id="img-upload-label">
+            <span style="font-size:2rem">📷</span>
+            <span>Toca para elegir foto de tu galería</span>
+          </div>
+          <input type="file" accept="image/*" id="product-img-input" onchange="previewImage(event)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nombre del Producto</label>
+        <input type="text" class="form-input" id="prod-name-input" placeholder="Ej: Scrub Quirúrgico Premium">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-input" id="prod-desc-input" rows="2" placeholder="Describe el producto..." style="resize:vertical"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Precio (USD $)</label>
+        <input type="number" class="form-input" id="prod-price-input" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Categoría</label>
+        <select class="form-input" id="prod-cat-input">
+          <option value="Scrubs">Scrubs</option>
+          <option value="Uniformes">Uniformes</option>
+          <option value="Gorros">Gorros</option>
+          <option value="Mascarillas">Mascarillas</option>
+          <option value="Batas">Batas Médicas</option>
+          <option value="Zapatos">Zapatos Clínicos</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Emoji (ícono)</label>
+        <input type="text" class="form-input" id="prod-emoji-input" placeholder="🩺" maxlength="2">
+      </div>
+      <button class="add-to-cart-btn" onclick="saveProduct()">💾 Guardar Producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN BUTTON (hidden from customers) -->
+<button class="admin-btn" id="admin-btn" onclick="openAdminLogin()" title="Admin" style="display:none">⚙️</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIG — Personaliza aquí
+// ============================================================
+const CONFIG = {
+  adminPassword: "Admin123",         // ← Contraseña del panel Admin
+  whatsappNumber: "50379540523",     // ← Tu número WhatsApp
+  adminSecretTap: 5,                  // Toques en logo para mostrar botón admin
+  cartExpiryDays: 7
+};
+
+// ============================================================
+// COLORS & SIZES
+// ============================================================
+const COLORS = [
+  {name:"Blanco",hex:"#FFFFFF",border:"#ccc"},
+  {name:"Negro",hex:"#1a1a1a"},
+  {name:"Celeste",hex:"#87CEEB"},
+  {name:"Gris",hex:"#9E9E9E"},
+  {name:"Verde Quirúrgico",hex:"#4CAF82"},
+  {name:"Azul Oscuro",hex:"#1A3A6B"},
+  {name:"Azul Negro",hex:"#0D1B2A"},
+  {name:"Vino",hex:"#722F37"}
+];
+const SIZES = ["XXS","XS","S","M","L","XL"];
+
+// ============================================================
+// INITIAL PRODUCTS DATA
+// ============================================================
+const DEFAULT_PRODUCTS = [
+  {id:"p1",name:"Scrub Clásico Unisex",desc:"Scrub de tela suave antifluidos, cómodo para largas jornadas. Ideal para médicos y enfermeros.",price:18.99,category:"Scrubs",emoji:"👗",img:""},
+  {id:"p2",name:"Scrub Premium Stretch",desc:"Material elástico de alta calidad con bolsillos reforzados. Gran comodidad y durabilidad.",price:24.99,category:"Scrubs",emoji:"👔",img:""},
+  {id:"p3",name:"Uniforme Médico Completo",desc:"Set completo de uniforme clínico con pantalón y camisa. Tejido antibacterial.",price:34.99,category:"Uniformes",emoji:"🥼",img:""},
+  {id:"p4",name:"Uniforme Enfermería",desc:"Uniforme especial para personal de enfermería, cómodo y fácil de lavar.",price:29.99,category:"Uniformes",emoji:"👩‍⚕️",img:""},
+  {id:"p5",name:"Gorro Quirúrgico",desc:"Gorro 100% algodón ajustable. Disponible en varios colores.",price:5.99,category:"Gorros",emoji:"🎓",img:""},
+  {id:"p6",name:"Gorro Estampado Médico",desc:"Gorro con diseños médicos únicos. Material transpirable y suave.",price:7.99,category:"Gorros",emoji:"🧢",img:""},
+  {id:"p7",name:"Mascarilla N95",desc:"Mascarilla de alta filtración certificada. Pack de 5 unidades.",price:9.99,category:"Mascarillas",emoji:"😷",img:""},
+  {id:"p8",name:"Mascarilla Quirúrgica x50",desc:"Pack de 50 mascarillas desechables de 3 capas, color azul.",price:12.99,category:"Mascarillas",emoji:"🫁",img:""},
+  {id:"p9",name:"Bata Médica Clásica",desc:"Bata blanca de laboratorio de tela gruesa. Botones de nácar. Manga larga.",price:26.99,category:"Batas",emoji:"🥼",img:""},
+  {id:"p10",name:"Bata Quirúrgica Desechable",desc:"Bata estéril de un solo uso para procedimientos clínicos. Pack de 10.",price:19.99,category:"Batas",emoji:"🧪",img:""},
+  {id:"p11",name:"Zapatos Clínicos Ergonómicos",desc:"Zapatos antideslizantes con suela acolchada. Perfectos para largas horas de pie.",price:44.99,category:"Zapatos",emoji:"👟",img:""},
+  {id:"p12",name:"Crocs Clínicos Cerrados",desc:"Estilo clásico en versión clínica. Antideslizantes, fáciles de limpiar.",price:32.99,category:"Zapatos",emoji:"🥿",img:""}
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let products = [];
+let cart = [];
+let orders = [];
+let currentProduct = null;
+let selectedSize = "";
+let selectedColor = "";
+let currentQty = 1;
+let isAdmin = false;
+let adminTapCount = 0;
+let checkoutStep = 1; // 1=cart, 2=form, 3=confirm
+
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+function saveProducts(){localStorage.setItem('tm_products',JSON.stringify(products));}
+function loadProducts(){
+  const s=localStorage.getItem('tm_products');
+  if(s){products=JSON.parse(s);}else{products=[...DEFAULT_PRODUCTS];saveProducts();}
+}
+function saveCart(){
+  const entry={items:cart,timestamp:Date.now()};
+  localStorage.setItem('tm_cart',JSON.stringify(entry));
+}
+function loadCart(){
+  const s=localStorage.getItem('tm_cart');
+  if(s){
+    const entry=JSON.parse(s);
+    const age=(Date.now()-entry.timestamp)/(1000*60*60*24);
+    if(age<CONFIG.cartExpiryDays){cart=entry.items||[];}else{cart=[];localStorage.removeItem('tm_cart');}
+  }
+}
+function saveOrders(){localStorage.setItem('tm_orders',JSON.stringify(orders));}
+function loadOrders(){
+  const s=localStorage.getItem('tm_orders');
+  if(s){
+    orders=JSON.parse(s);
+    // Remove orders older than 7 days
+    const cutoff=Date.now()-7*24*60*60*1000;
+    orders=orders.filter(o=>o.timestamp>cutoff);
+    saveOrders();
+  }
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+const CATEGORIES = ["Todos","Scrubs","Uniformes","Gorros","Mascarillas","Batas","Zapatos"];
+const CAT_EMOJIS = {"Todos":"🏥","Scrubs":"👗","Uniformes":"🥼","Gorros":"🎓","Mascarillas":"😷","Batas":"🧥","Zapatos":"👟"};
+let activeCategory = "Todos";
+
+function renderCatNav(){
+  const nav=document.getElementById('cat-nav');
+  nav.innerHTML=CATEGORIES.map(c=>`<button class="cat-tab${c===activeCategory?' active':''}" onclick="setCategory('${c}')">${CAT_EMOJIS[c]} ${c}</button>`).join('');
+}
+function setCategory(cat){
+  activeCategory=cat;
+  renderCatNav();
+  renderProducts();
+}
+
+// ============================================================
+// PRODUCTS RENDER
+// ============================================================
+function renderProducts(){
+  const container=document.getElementById('products-container');
+  const filtered=activeCategory==="Todos"?products:products.filter(p=>p.category===activeCategory);
+  if(filtered.length===0){container.innerHTML='<div style="text-align:center;padding:40px;color:var(--text-light);">No hay productos en esta categoría.</div>';return;}
+  
+  const byCategory={};
+  filtered.forEach(p=>{if(!byCategory[p.category])byCategory[p.category]=[];byCategory[p.category].push(p);});
+  
+  let html='';
+  Object.keys(byCategory).forEach(cat=>{
+    html+=`<div class="section-title">${CAT_EMOJIS[cat]||'📦'} ${cat}</div><div class="products-grid">`;
+    byCategory[cat].forEach(p=>{
+      html+=`<div class="product-card" onclick="openProductModal('${p.id}')">
+        <div class="product-img">${p.img?`<img src="${p.img}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}</div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-price">$${parseFloat(p.price).toFixed(2)}</div>
+          <button class="product-add-btn" onclick="event.stopPropagation();quickAdd('${p.id}')">+ Agregar</button>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  container.innerHTML=html;
+}
+
+// ============================================================
+// PRODUCT MODAL
+// ============================================================
+function openProductModal(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  currentProduct=p;
+  selectedSize="";selectedColor="";currentQty=1;
+  document.getElementById('modal-prod-name').textContent=p.name;
+  document.getElementById('modal-prod-price').textContent=`$${parseFloat(p.price).toFixed(2)}`;
+  document.getElementById('modal-prod-desc').textContent=p.desc||'';
+  const imgEl=document.getElementById('modal-prod-img');
+  imgEl.innerHTML=p.img?`<img src="${p.img}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`;
+  // Sizes
+  document.getElementById('modal-sizes').innerHTML=SIZES.map(s=>`<button class="size-btn" onclick="selectSize('${s}',this)">${s}</button>`).join('');
+  // Colors
+  document.getElementById('modal-colors').innerHTML=COLORS.map(c=>`<button class="color-btn" style="background:${c.hex};${c.border?'border-color:'+c.border+';':''}" title="${c.name}" onclick="selectColor('${c.name}',this)"></button>`).join('');
+  document.getElementById('modal-qty').textContent='1';
+  document.getElementById('product-modal').classList.add('open');
+}
+function closeProductModal(){document.getElementById('product-modal').classList.remove('open');}
+function selectSize(s,btn){selectedSize=s;document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function selectColor(c,btn){selectedColor=c;document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function changeQty(d){currentQty=Math.max(1,currentQty+d);document.getElementById('modal-qty').textContent=currentQty;}
+
+function addToCart(){
+  if(!selectedSize){showToast("⚠️ Selecciona una talla");return;}
+  if(!selectedColor){showToast("⚠️ Selecciona un color");return;}
+  const existing=cart.find(i=>i.id===currentProduct.id&&i.size===selectedSize&&i.color===selectedColor);
+  if(existing){existing.qty+=currentQty;}
+  else{cart.push({id:currentProduct.id,name:currentProduct.name,price:currentProduct.price,emoji:currentProduct.emoji,img:currentProduct.img,size:selectedSize,color:selectedColor,qty:currentQty});}
+  saveCart();updateCartCount();
+  closeProductModal();
+  showToast("✅ Producto agregado al carrito");
+}
+
+function quickAdd(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  currentProduct=p;selectedSize="";selectedColor="";currentQty=1;
+  openProductModal(id);
+}
+
+function updateCartCount(){
+  const total=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cart-count').textContent=total;
+}
+
+// ============================================================
+// CART PANEL
+// ============================================================
+function openCart(){
+  checkoutStep=1;
+  renderCart();
+  document.getElementById('cart-panel').classList.add('open');
+}
+function closeCart(){document.getElementById('cart-panel').classList.remove('open');}
+
+function renderCart(){
+  const container=document.getElementById('cart-items-container');
+  const summary=document.getElementById('cart-summary');
+  const checkout=document.getElementById('checkout-section');
+  
+  if(cart.length===0){
+    container.innerHTML=`<div class="cart-empty"><div class="empty-icon">🛒</div><p>Tu carrito está vacío</p><p style="font-size:0.82rem;color:var(--text-light);margin-top:8px;">¡Agrega productos del menú!</p></div>`;
+    summary.style.display='none';
+    return;
+  }
+  
+  summary.style.display='block';
+  
+  if(checkoutStep===1){
+    container.innerHTML=cart.map((item,i)=>`
+      <div class="cart-item">
+        <div class="cart-item-img">${item.img?`<img src="${item.img}" alt="${item.name}">`:`<span>${item.emoji||'📦'}</span>`}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-meta">Talla: ${item.size} · Color: ${item.color}</div>
+          <div class="cart-item-price">$${(parseFloat(item.price)*item.qty).toFixed(2)}</div>
+          <div class="cart-item-actions">
+            <button class="cart-qty-btn" onclick="updateCartQty(${i},-1)">−</button>
+            <span class="cart-qty-val">${item.qty}</span>
+            <button class="cart-qty-btn" onclick="updateCartQty(${i},1)">+</button>
+            <button class="cart-remove" onclick="removeCartItem(${i})">🗑️</button>
+          </div>
+        </div>
+      </div>`).join('');
+    const total=cart.reduce((s,i)=>s+(parseFloat(i.price)*i.qty),0);
+    document.getElementById('cart-total-display').textContent=`$${total.toFixed(2)}`;
+    checkout.innerHTML=`
+      <div class="payment-badge">
+        <span class="payment-badge-icon">💵</span>
+        <div>
+          <div class="payment-badge-text">Pago contra entrega</div>
+          <div class="payment-badge-sub">Pagas al recibir tu pedido 🇸🇻</div>
+        </div>
+      </div>
+      <button class="add-to-cart-btn" onclick="goToCheckoutForm()" style="background:linear-gradient(135deg,var(--primary),var(--accent))">📝 Ingresar Datos de Envío</button>`;
+  } else if(checkoutStep===2){
+    container.innerHTML=`
+      <div class="checkout-form">
+        <h3 style="font-family:'Nunito',sans-serif;font-weight:800;color:var(--primary-dark);margin-bottom:16px;">📋 Datos para el Pedido</h3>
+        <div class="form-group">
+          <label class="form-label">👤 Nombre Completo</label>
+          <input type="text" class="form-input" id="order-name" placeholder="Tu nombre completo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📱 Número de Teléfono</label>
+          <input type="tel" class="form-input" id="order-phone" placeholder="7000-0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📍 Dirección Exacta</label>
+          <textarea class="form-input" id="order-address" rows="3" placeholder="Colonia, Calle, Casa/Apto, Municipio, Departamento..."></textarea>
+        </div>
+      </div>`;
+    const total=cart.reduce((s,i)=>s+(parseFloat(i.price)*i.qty),0);
+    document.getElementById('cart-total-display').textContent=`$${total.toFixed(2)}`;
+    checkout.innerHTML=`
+      <div style="display:flex;gap:8px;">
+        <button class="add-to-cart-btn" onclick="checkoutStep=1;renderCart()" style="background:#fff;color:var(--primary);border:2px solid var(--primary);flex:0.4;">← Volver</button>
+        <button class="add-to-cart-btn submit-order-btn" onclick="sendWhatsApp()" style="flex:1;"><span class="whatsapp-icon">💬</span> Enviar Pedido por WhatsApp</button>
+      </div>`;
+  }
+}
+
+function goToCheckoutForm(){
+  if(cart.length===0){showToast("⚠️ El carrito está vacío");return;}
+  checkoutStep=2;
+  renderCart();
+}
+
+function updateCartQty(i,d){
+  cart[i].qty=Math.max(1,cart[i].qty+d);
+  saveCart();updateCartCount();renderCart();
+}
+function removeCartItem(i){
+  cart.splice(i,1);
+  saveCart();updateCartCount();renderCart();
+}
+
+function sendWhatsApp(){
+  const name=document.getElementById('order-name')?.value?.trim();
+  const phone=document.getElementById('order-phone')?.value?.trim();
+  const address=document.getElementById('order-address')?.value?.trim();
+  if(!name){showToast("⚠️ Escribe tu nombre");return;}
+  if(!phone){showToast("⚠️ Escribe tu teléfono");return;}
+  if(!address){showToast("⚠️ Escribe tu dirección");return;}
+  
+  const total=cart.reduce((s,i)=>s+(parseFloat(i.price)*i.qty),0);
+  const orderId="ORD-"+Date.now().toString().slice(-6);
+  const itemsList=cart.map(i=>`• ${i.name} (${i.size}, ${i.color}) x${i.qty} = $${(parseFloat(i.price)*i.qty).toFixed(2)}`).join('\n');
+  
+  // Save order
+  const order={
+    id:orderId,
+    customer:name,
+    phone,
+    address,
+    items:[...cart],
+    total:total.toFixed(2),
+    status:"pendiente",
+    timestamp:Date.now()
+  };
+  orders.push(order);
+  saveOrders();
+  
+  const cartLink=window.location.href;
+  const msg=`🛒 *NUEVO PEDIDO — Tienda Médica El Salvador* 🇸🇻\n\n`+
+    `📋 *ID:* ${orderId}\n`+
+    `👤 *Cliente:* ${name}\n`+
+    `📱 *Teléfono:* ${phone}\n`+
+    `📍 *Dirección:* ${address}\n\n`+
+    `🛍️ *Productos:*\n${itemsList}\n\n`+
+    `💰 *TOTAL: $${total.toFixed(2)} USD*\n\n`+
+    `🔗 *Carrito:* ${cartLink}\n\n`+
+    `_Pedido realizado desde Tienda Médica El Salvador_`;
+  
+  const waURL=`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+  window.open(waURL,'_blank');
+  
+  cart=[];saveCart();updateCartCount();
+  closeCart();
+  showToast("✅ ¡Pedido enviado por WhatsApp!");
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+let adminTapTimer=null;
+function handleLogoTap(){
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer=setTimeout(()=>{adminTapCount=0;},2000);
+  if(adminTapCount>=CONFIG.adminSecretTap){
+    adminTapCount=0;
+    document.getElementById('admin-btn').style.display='flex';
+    showToast("🔓 Botón Admin activado");
+  }
+}
+
+function openAdminLogin(){document.getElementById('login-overlay').classList.add('open');document.getElementById('admin-password').value='';document.getElementById('login-error').style.display='none';}
+function closeLogin(){document.getElementById('login-overlay').classList.remove('open');}
+function checkAdminLogin(){
+  const pw=document.getElementById('admin-password').value;
+  if(pw===CONFIG.adminPassword){
+    isAdmin=true;closeLogin();openAdmin();
+  }else{
+    document.getElementById('login-error').style.display='block';
+    document.getElementById('admin-password').value='';
+  }
+}
+function openAdmin(){renderAdminProducts();document.getElementById('admin-panel').classList.add('open');}
+function closeAdmin(){document.getElementById('admin-panel').classList.remove('open');}
+
+function switchAdminTab(tab,btn){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('admin-products-tab').style.display=tab==='products'?'block':'none';
+  document.getElementById('admin-orders-tab').style.display=tab==='orders'?'block':'none';
+  document.getElementById('admin-banner-tab').style.display=tab==='banner'?'block':'none';
+  if(tab==='orders')renderAdminOrders();
+  if(tab==='banner')loadBannerPreview();
+}
+
+function renderAdminProducts(){
+  const list=document.getElementById('admin-products-list');
+  if(products.length===0){list.innerHTML='<div class="no-orders">No hay productos.</div>';return;}
+  list.innerHTML=products.map(p=>`
+    <div class="admin-product-card">
+      <div class="admin-product-img">${p.img?`<img src="${p.img}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}</div>
+      <div class="admin-product-info">
+        <div class="admin-product-name">${p.name}</div>
+        <div class="admin-product-price">$${parseFloat(p.price).toFixed(2)}</div>
+        <div class="admin-product-cat">📁 ${p.category}</div>
+        <div class="admin-actions">
+          <button class="btn-edit" onclick="editProduct('${p.id}')">✏️ Editar</button>
+          <button class="btn-delete" onclick="deleteProduct('${p.id}')">🗑️ Eliminar</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAdminOrders(){
+  const list=document.getElementById('admin-orders-list');
+  loadOrders();
+  if(orders.length===0){list.innerHTML='<div class="no-orders">📭 No hay pedidos aún.</div>';return;}
+  const statusLabels={pendiente:"Pendiente",recibido:"Recibido",hecho:"Hecho",camino:"En Camino",entregado:"Entregado"};
+  const statusColors={pendiente:"status-pendiente",recibido:"status-recibido",hecho:"status-hecho",camino:"status-camino",entregado:"status-entregado"};
+  const sorted=[...orders].sort((a,b)=>b.timestamp-a.timestamp);
+  list.innerHTML=sorted.map(o=>`
+    <div class="order-card">
+      <div class="order-header">
+        <div>
+          <div class="order-id">#${o.id}</div>
+          <div class="order-customer">${o.customer}</div>
+          <div class="order-phone">📱 ${o.phone}</div>
+          <div class="order-address">📍 ${o.address}</div>
+        </div>
+        <span class="status-badge ${statusColors[o.status]||'status-pendiente'}">${statusLabels[o.status]||o.status}</span>
+      </div>
+      <div class="order-items">${o.items.map(i=>`• ${i.name} (${i.size}, ${i.color}) x${i.qty}`).join('<br>')}</div>
+      <div class="order-total">💰 Total: $${o.total} USD</div>
+      <select class="status-select" onchange="updateOrderStatus('${o.id}',this.value)">
+        <option value="pendiente"${o.status==='pendiente'?' selected':''}>📥 Pedido Recibido</option>
+        <option value="recibido"${o.status==='recibido'?' selected':''}>✅ Pedido Confirmado</option>
+        <option value="hecho"${o.status==='hecho'?' selected':''}>🔨 Pedido Hecho</option>
+        <option value="camino"${o.status==='camino'?' selected':''}>🚗 Pedido en Camino</option>
+        <option value="entregado"${o.status==='entregado'?' selected':''}>📦 Pedido Entregado</option>
+      </select>
+    </div>`).join('');
+}
+
+function updateOrderStatus(id,status){
+  const o=orders.find(x=>x.id===id);
+  if(o){o.status=status;saveOrders();showToast("✅ Estado actualizado");renderAdminOrders();}
+}
+
+// ============================================================
+// PRODUCT FORM
+// ============================================================
+let editingProductId=null;
+let productImgBase64="";
+
+function openProductForm(id){
+  editingProductId=id||null;
+  productImgBase64="";
+  document.getElementById('img-preview').style.display='none';
+  document.getElementById('img-upload-label').style.display='flex';
+  document.getElementById('product-img-input').value='';
+  if(id){
+    const p=products.find(x=>x.id===id);
+    document.getElementById('product-form-title').textContent='Editar Producto';
+    document.getElementById('prod-name-input').value=p.name;
+    document.getElementById('prod-desc-input').value=p.desc||'';
+    document.getElementById('prod-price-input').value=p.price;
+    document.getElementById('prod-cat-input').value=p.category;
+    document.getElementById('prod-emoji-input').value=p.emoji||'';
+    if(p.img){productImgBase64=p.img;document.getElementById('img-preview').src=p.img;document.getElementById('img-preview').style.display='block';document.getElementById('img-upload-label').style.display='none';}
+  }else{
+    document.getElementById('product-form-title').textContent='Agregar Producto';
+    document.getElementById('prod-name-input').value='';
+    document.getElementById('prod-desc-input').value='';
+    document.getElementById('prod-price-input').value='';
+    document.getElementById('prod-cat-input').value='Scrubs';
+    document.getElementById('prod-emoji-input').value='';
+  }
+  document.getElementById('product-form-modal').classList.add('open');
+}
+function closeProductForm(){document.getElementById('product-form-modal').classList.remove('open');}
+
+function previewImage(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    productImgBase64=ev.target.result;
+    document.getElementById('img-preview').src=productImgBase64;
+    document.getElementById('img-preview').style.display='block';
+    document.getElementById('img-upload-label').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveProduct(){
+  const name=document.getElementById('prod-name-input').value.trim();
+  const desc=document.getElementById('prod-desc-input').value.trim();
+  const price=parseFloat(document.getElementById('prod-price-input').value);
+  const category=document.getElementById('prod-cat-input').value;
+  const emoji=document.getElementById('prod-emoji-input').value.trim()||'📦';
+  if(!name){showToast("⚠️ Escribe el nombre del producto");return;}
+  if(isNaN(price)||price<0){showToast("⚠️ Escribe un precio válido");return;}
+  
+  if(editingProductId){
+    const p=products.find(x=>x.id===editingProductId);
+    if(p){p.name=name;p.desc=desc;p.price=price;p.category=category;p.emoji=emoji;if(productImgBase64)p.img=productImgBase64;}
+    showToast("✅ Producto actualizado");
+  }else{
+    products.push({id:"p"+Date.now(),name,desc,price,category,emoji,img:productImgBase64||""});
+    showToast("✅ Producto agregado");
+  }
+  saveProducts();
+  closeProductForm();
+  renderProducts();
+  renderAdminProducts();
+}
+
+function editProduct(id){openProductForm(id);}
+function deleteProduct(id){
+  if(!confirm("¿Eliminar este producto?"))return;
+  products=products.filter(p=>p.id!==id);
+  saveProducts();renderAdminProducts();renderProducts();
+  showToast("🗑️ Producto eliminado");
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ============================================================
+// LOGO TAP for secret admin button
+// ============================================================
+document.querySelector('.logo-area').addEventListener('click',handleLogoTap);
+
+// ============================================================
+// BANNER
+// ============================================================
+let bannerImgBase64="";
+function previewBanner(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    bannerImgBase64=ev.target.result;
+    document.getElementById('banner-preview').src=bannerImgBase64;
+    document.getElementById('banner-preview').style.display='block';
+    document.getElementById('banner-upload-label').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+function saveBanner(){
+  if(!bannerImgBase64){showToast("⚠️ Selecciona una imagen primero");return;}
+  localStorage.setItem('tm_banner',bannerImgBase64);
+  renderBanner();
+  showToast("✅ Banner guardado");
+}
+function removeBanner(){
+  localStorage.removeItem('tm_banner');
+  bannerImgBase64="";
+  renderBanner();
+  loadBannerPreview();
+  showToast("🗑️ Banner eliminado");
+}
+function loadBannerPreview(){
+  const saved=localStorage.getItem('tm_banner');
+  bannerImgBase64=saved||"";
+  if(saved){
+    document.getElementById('banner-preview').src=saved;
+    document.getElementById('banner-preview').style.display='block';
+    document.getElementById('banner-upload-label').style.display='none';
+  }else{
+    document.getElementById('banner-preview').style.display='none';
+    document.getElementById('banner-upload-label').style.display='flex';
+  }
+}
+function renderBanner(){
+  const saved=localStorage.getItem('tm_banner');
+  const banner=document.getElementById('main-banner');
+  if(saved){
+    banner.className='banner has-img';
+    banner.innerHTML=`<img src="${saved}" alt="Banner Tienda Médica"><div class="banner-text-overlay"><h2>Ropa Médica Premium 🩺</h2><p>Uniformes, Scrubs, Calzado Clínico y más — envío en El Salvador 🇸🇻</p></div>`;
+  }else{
+    banner.className='banner';
+    banner.innerHTML=`<h2>Ropa Médica Premium 🩺</h2><p>Uniformes, Scrubs, Calzado Clínico y más — envío en El Salvador 🇸🇻</p>`;
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init(){
+  loadProducts();
+  loadCart();
+  loadOrders();
+  renderCatNav();
+  renderProducts();
+  renderBanner();
+  updateCartCount();
+}
+init();
+</script>
+</body>
+</html>
